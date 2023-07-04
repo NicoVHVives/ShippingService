@@ -10,15 +10,14 @@ namespace ShippingService.ServiceLayer.DTO
 {
     public class ShippingHistoryDTO
     {
-        public class ShippingHistory : BaseEntity
-        {
+        
 
-            [Required]
+            
             public Guid ClientGuid { get; set; }
-            [Required]
+          
             public Guid ItemGuid { get; set; }
 
-
-        }
+            public DateTime CreatedDate { get; set; }
+        
     }
 }

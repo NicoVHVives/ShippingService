@@ -130,7 +130,19 @@ namespace ShippingService.WebAPI.Controllers
                 if (loggedInUser == null)
                     return Forbid();
 
-                IEnumerable<ShippingHistory> results = _shippingHistoryService.GetAll(x => x.WebshopID == loggedInUser.Id && x.ClientGuid == clientGuid);
+                IEnumerable<ShippingHistory> history = _shippingHistoryService.GetAll(x => x.WebshopID == loggedInUser.Id && x.ClientGuid == clientGuid);
+                List<ShippingHistoryDTO> results = new List<ShippingHistoryDTO>();
+
+                foreach (var entity in history)
+                {
+                    results.Add(new ShippingHistoryDTO
+                    {
+                        ClientGuid = entity.ClientGuid,
+                        ItemGuid = entity.ItemGuid,
+                        CreatedDate = entity.CreatedDate
+
+                    });
+                }
 
                 if(results.Count() == 0)
                 {

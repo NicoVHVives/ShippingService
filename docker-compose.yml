@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  shippingservice.db:
+    hostname: shippingservicedb
+    env_file: postgres/.env.production
+    build:
+      context: .
+      dockerfile: postgres/Dockerfile
+    ports: 
+     - "5432:5432"
+    volumes:
+     - "c:/temp/postgresql:/var/lib/postgresql/data"
+  shippingservice.webapi:
+    image: ${DOCKER_REGISTRY-}shippingservicewebapi
+    hostname: shippingserviceapi
+    depends_on:
+      - shippingservice.db
+    build:
+      context: .
+      dockerfile: ShippingService.WebAPI/Dockerfile
+    ports: 
+     - "8080:80"
+     - "8081:443"
