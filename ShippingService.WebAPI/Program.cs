@@ -41,8 +41,8 @@ builder.Services.AddScoped<TokenService, TokenService>();
 builder.Services.AddScoped<MailService, MailService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IIdentityRepository<>), typeof(IdentityRepository<>));
-builder.Services.AddScoped<ShippingHistoryService, ShippingHistoryService>();
-builder.Services.AddScoped<WebShopUserService, WebShopUserService>();
+builder.Services.AddScoped<IService<ShippingHistory>, ShippingHistoryService>();
+builder.Services.AddScoped<IIdentityService<WebShopUser>, WebShopUserService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
