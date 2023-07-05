@@ -7,6 +7,8 @@ using ShippingService.RepositoryLayer.Data;
 using ShippingService.DomainLayer.Models;
 using ShippingService.ServiceLayer.Services;
 using ShippingService.ServiceLayer.DTO;
+using ShippingService.ServiceLayer.IServices;
+using System;
 
 namespace ShippingService.WebAPI.Controllers
 {
@@ -15,13 +17,13 @@ namespace ShippingService.WebAPI.Controllers
     public class ShippingController : ControllerBase
     {
 
-        private readonly ShippingHistoryService _shippingHistoryService;
-        private readonly WebShopUserService _webShopUserService;
+        private readonly IService<ShippingHistory> _shippingHistoryService;
+        private readonly IIdentityService<WebShopUser> _webShopUserService;
         private readonly IConfiguration _config;
         private readonly MailService _mailService;
 
 
-        public ShippingController(ShippingHistoryService shippingHistoryService, WebShopUserService webShopUserService, IConfiguration config, MailService mailService)
+        public ShippingController(IService<ShippingHistory> shippingHistoryService, IIdentityService<WebShopUser> webShopUserService, IConfiguration config, MailService mailService)
         {
             _shippingHistoryService = shippingHistoryService;
             _webShopUserService = webShopUserService;
@@ -76,7 +78,7 @@ namespace ShippingService.WebAPI.Controllers
                     shipResp.Account = entity.ClientGuid;
                     shipResp.Product = entity.ItemGuid;
 
-                    int nrOfShipments = _shippingHistoryService.GetNrOfShipments(entity.ClientGuid, entity.CreatedDate);
+                    int nrOfShipments = _shippingHistoryService.GetAll(x => x.ClientGuid == entity.ClientGuid && x.CreatedDate > created.AddDays(_config.GetValue<int>("ShippingParameters:FreeShipmentsPeriod") * -1)).Count();
 
                     if (nrOfShipments <= _config.GetValue<int>("ShippingParameters:MaxFreeShipments"))
                     {

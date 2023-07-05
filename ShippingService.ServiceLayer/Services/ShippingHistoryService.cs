@@ -145,35 +145,6 @@ namespace ShippingService.ServiceLayer.Services
             }
         }
 
-        public int GetNrOfShipments(Guid clientGuid, DateTime dateTime)
-        {
-            try
-            {
-                return _shippingHistoryRepository.GetAll()
-                    .Where(x => x.ClientGuid == clientGuid && x.CreatedDate > dateTime.AddDays(_config.GetValue<int>("ShippingParameters:FreeShipmentsPeriod") * -1)).Count();
-
-                
-                
-                    
-            }
-            catch(Exception)
-            {
-                throw;
-            }
-        }
-
-        public IEnumerable<ShippingHistory> GetAllForClientId(Guid clientGuid)
-        {
-            try
-            {
-                return GetAll()
-                    .Where(x => x.ClientGuid == clientGuid).ToArray();
-
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+       
     }
 }
